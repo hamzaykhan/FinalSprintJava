@@ -31,6 +31,18 @@ public class UserDao {
             if (updatedRows != 0) {
                 bool = true;
             }
+
+            // create doctor patient relationship
+            if (bool && !user.isDoctor()) {
+                int userId = statement.getGeneratedKeys().getInt(1);
+                Doctor doctor = getRandomDoctor();
+                String doctorPatientStatement = "INSERT INTO doctor_patient (doctor_id, patient_id) VALUES (?, ?)";
+                try (PreparedStatement stmt = con.prepareStatement(doctorPatientStatement)) {
+                    stmt.setInt(1, doctor.getId());
+                    stmt.setInt(2, userId);
+                    stmt.executeUpdate();
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -170,5 +182,39 @@ public class UserDao {
             e.printStackTrace();
         }
         return bool;
+    }
+
+    public Doctor getRandomDoctor() {
+        int id = 0;
+        String firstName = null;
+        String lastName = null;
+        String user_email = null;
+        String password = null;
+        boolean is_doctor = false;
+        String medicalLicenseNumber = null;
+        String specialization = null;
+
+        // Prepare the SQL query
+        String query = "SELECT * FROM users WHERE is_doctor = true ORDER BY RAND() LIMIT 1";
+
+        // Database logic to get data by ID Using Prepared Statement
+        try {
+            Connection con = DatabaseConnection.getCon();
+            PreparedStatement statement = con.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                id = rs.getInt("id");
+                firstName = rs.getString("first_name");
+                lastName = rs.getString("last_name");
+                user_email = rs.getString("email");
+                password = rs.getString("password");
+                is_doctor = rs.getBoolean("is_doctor");
+                medicalLicenseNumber = rs.getString("medical_license_number");
+                specialization = rs.getString("specialization");
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return new Doctor(id, firstName, lastName, user_email, password, is_doctor, medicalLicenseNumber, specialization);
     }
 }

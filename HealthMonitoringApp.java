@@ -35,16 +35,16 @@ public class HealthMonitoringApp {
     public static void insertUsers() {
         List<User> userList = new ArrayList<>();
 
+        Doctor user2 = new Doctor(-1,"Ramsha", "Ishtiaque","ramshaishtiaque@gmail.com", "Zarrar", true, "12345", "Physician");
+        userList.add(user2);
+
         User user1 = new User(-1,"Ainee", "Malik","qmalik@gmail.com", "guggu", false);
         userList.add(user1);
-
-        User user2 = new User(-1,"Ramsha", "Ishtiaque","ramshaishtiaque@gmail.com", "Zarrar", true);
-        userList.add(user2);
 
         User user3 = new User(-1,"Hamza", "khan","hamzakhan@gmail.com", "guggu", false);
         userList.add(user3);
 
-        User user4 = new User(-1,"Bilal", "Ishtiaque","bilalishtiaque@gmail.com", "guggu", true);
+        Doctor user4 = new Doctor(-1,"Bilal", "Ishtiaque","bilalishtiaque@gmail.com", "guggu", true, "234567", "Dentist");
         userList.add(user4);
 
         User user5 = new User(-1,"Zarrar", "Khan","zarrarkhan@gmail.com", "guggu", true);
